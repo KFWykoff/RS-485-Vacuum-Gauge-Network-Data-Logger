@@ -38,28 +38,49 @@ Please refer to the simple diagram below for the wiring of the network. This is 
 ## Some (Maybe Useful) Notes
 
 *  #### Quick Reference Sheet
-  To eliminate the need to continuously find the shield and gauge pinouts in their respective manuals while constructing the system, I hand drew a simple sheet for quick reference. Please see the document titled "Quick Pinout Reference." This includes the pinout for the RS-485 shield D-Sub interface and infomration on the screw interface (with the later being used in this project and the former there for anyone who may choose to use the D-Sub). It includes pinout information for both the 15-pin and 9-pin vacuum gauge D-Sub connectors (with the former being used in this case) and a simple diagram of a generic RS-485 network wired for half-duplex operation.
+
+   To eliminate the need to continuously find the shield and gauge pinouts in their respective manuals while constructing the system, I hand drew a simple sheet                      
+   for quick reference. Please see the document titled "Quick Pinout Reference." This includes the pinout for the RS-485 shield D-Sub interface and infomration on 
+   the screw interface (with the later being used in this project and the former there for anyone who may choose to use the D-Sub). It includes pinout information      
+   for both the 15-pin and 9-pin vacuum gauge D-Sub connectors (with the former being used in this case) and a simple diagram of a generic RS-485 network wired    
+   for half-duplex operation.
 
 *  #### Communication Pins
 
-  Because this configuration enables only half-duplex operation of the RS-485 system, data transmission and reciept must occur seperately (i.e. a command must be sent to the gauge with the shield in data transmission mode, then the shield must be switched to data receipt mode prior to reading the return data from a gauge). On the RPi, GPIO 14 connects to the 'Data In' (DI) pin on the MAX485 chip, GPIO 15 connects to the 'Recieve Out' (RO) pin, and GPIO 18 connects to the 'Driver Enable' and 'Receiver Enable' (DE & RE) pins. The DE & RE pins are of opposite polarity (with DE active-high and RE active-low), thus they can be controlled soley by GPIO 18, pulling DE high when transmitting data and RE low when receiving data (with their respective counterpart maintaining opposite polarity).
+   Because this configuration enables only half-duplex operation of the RS-485 system, data transmission and reciept must occur seperately (i.e. a command must be   
+   sent to the gauge with the shield in data transmission mode, then the shield must be switched to data receipt mode prior to reading the return data from a  
+   gauge). On the RPi, GPIO 14 connects to the 'Data In' (DI) pin on the MAX485 chip, GPIO 15 connects to the 'Recieve Out' (RO) pin, and GPIO 18 connects to the 
+   'Driver Enable' and 'Receiver Enable' (DE & RE) pins. The DE & RE pins are of opposite polarity (with DE active-high and RE active-low), thus they can be 
+   controlled soley by GPIO 18, pulling DE high when transmitting data and RE low when receiving data (with their respective counterpart maintaining opposite 
+   polarity).
 
    ***NOTE:*** Some RPi models (including the model used) require you to enable the UART pins (GPIO 14 and 15) for such operation. This can be done by making changes to the RPi config file. Instructions detailing this process are easily found online, as are details as to which models require these changes.
 
 *  #### Communication Terminal Labeling
-  The communication terminals (listed as terminal '485-A' and '485-B' on the screw terminal interface of the shield used and as 'RS485 DATA B(+)' and 'RS485 DATA A(-)' in the manual for the gauges used) have oppositely labeled polarities [i.e. the shield has the configuration A(+), B(-)]. You will therefore need to make sure that the 'A' data pin of the gauges are in line with the 'B' screw terminal on the shield and vice versa.
+
+   The communication terminals (listed as terminal '485-A' and '485-B' on the screw terminal interface of the shield used and as 'RS485 DATA B(+)' and 'RS485 DATA  
+   A(-)' in the manual for the gauges used) have oppositely labeled polarities [i.e. the shield has the configuration A(+), B(-)]. You will therefore need to make 
+   sure that the 'A' data pin of the gauges are in line with the 'B' screw terminal on the shield and vice versa.
 
 *  #### Serial Communication Timing
 
-  Because this configuration enables only half-duplex operation, as described previously, timing is an issue in ensuring that a full command is sent from the RPi and that a return message is not truncated. I found the timing cited in the gauge manual to be largely unhelpful. Moreover, I found that other manuals for KJL gauges employing the same ASCII command protocol were inconsistent with those listed for the KJLC 300 series.
+   Because this configuration enables only half-duplex operation, as described previously, timing is an issue in ensuring that a full command is sent from the RPi 
+   and that a return message is not truncated. I found the timing cited in the gauge manual to be largely unhelpful. Moreover, I found that other manuals for KJL 
+   gauges employing the same ASCII command protocol were inconsistent with those listed for the KJLC 300 series.
 
-  The manual sates that the protocol should be 100% compatible with that of the Granville-Phillips Mini-Convectron Modules, however, I found the minimum transmission times listed in the affilated Gainville-Phillips guides to be incongruent with those necessary to receive full return messages in many situations (sometimes obtaining succesful readings with transmission times below the listed minima).
+   The manual sates that the protocol should be 100% compatible with that of the Granville-Phillips Mini-Convectron Modules, however, I found the minimum 
+   transmission times listed in the affilated Gainville-Phillips guides to be incongruent with those necessary to receive full return messages in many situations 
+   (sometimes obtaining succesful readings with transmission times below the listed minima).
 
-  My experience has also been (and I may be overlooking something) that very minor changes to the code usually require changes in transmission and receipt times and that the margin of error is very small (often with only ~.001 second making a difference). When the timing is off, the readings often become littered with null bytes or undesired binary-hex characters. I would appreciate it if anyone who has been more sucessful in efficiently finding the ideal transmission times would please reach out and let me know what has worked for them.
+   My experience has also been (and I may be overlooking something) that very minor changes to the code usually require changes in transmission and receipt times 
+   and that the margin of error is very small (often with only ~.001 second making a difference). When the timing is off, the readings often become littered with 
+   null bytes or undesired binary-hex characters. I would appreciate it if anyone who has been more sucessful in efficiently finding the ideal transmission times 
+   would please reach out and let me know what has worked for them.
 
 *  #### RS-485 Commands
 
-  For the particular operating system noted above the carriage return necessary to close all commands is '\r', with the entirety of the command given as a byte string (denoted by single quotation marks) with ASCII encoding applied. For example:
+   For the particular operating system noted above the carriage return necessary to close all commands is '\r', with the entirety of the command given as a byte 
+   string (denoted by single quotation marks) with ASCII encoding applied. For example:
 
   ```
   '#01RD\r'.encode('ascii')
