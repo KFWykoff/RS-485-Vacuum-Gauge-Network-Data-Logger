@@ -39,12 +39,12 @@ Please refer to the simple diagram below for the wiring of the network. This is 
 
 *  #### Quick Reference Sheet
 
-   To eliminate the need to continuously find the shield and gauge pinouts in their respective manuals while constructing the system, I hand drew a simple sheet                      
-   for quick reference. Please see the document titled "Quick Pinout Reference." This includes the pinout for the RS-485 shield D-Sub interface and infomration on 
-   the screw interface (with the later being used in this project and the former there for anyone who may choose to use the D-Sub). It includes pinout information      
-   for both the 15-pin and 9-pin vacuum gauge D-Sub connectors (with the former being used in this case) and a simple diagram of a generic RS-485 network wired    
-   for half-duplex operation.
-
+   To eliminate the need to continuously find the shield and gauge pinouts in their respective manuals while constructing the system, I hand drew a simple sheet      
+   for quick reference. Please see the document titled "Quick Pinout Reference." This includes the pinout for the RS-485 shield D-Sub interface and information 
+   on the screw interface (with the later being used in this project and the former there for anyone who may choose to use the D-Sub). It includes pinout 
+   information for both the 15-pin and 9-pin vacuum gauge D-Sub connectors (with the former being used in this case) and a simple diagram of a generic RS-485 
+   network wired for half-duplex operation.
+   
 *  #### Communication Pins
 
    Because this configuration enables only half-duplex operation of the RS-485 system, data transmission and reciept must occur seperately (i.e. a command must be   
