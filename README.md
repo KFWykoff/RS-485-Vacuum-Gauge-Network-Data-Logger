@@ -32,7 +32,7 @@ I used the latest stable branch of Python 3 for RPi at the time of assembling th
 
 Please refer to the simple diagram below for the wiring of the network. This is a typical RS-485 setup for half-duplex operation. I have omitted some equipment specific details, as they are not pertinent to understanding the overall layout. I have also omitted detailed schematics of the shield, the interplay between the shield and the RPi, etc., as these can be obtained from the manuals listed previously.
 
-![Screen Shot 2020-08-08 at 7 10 01 PM](https://user-images.githubusercontent.com/57844952/89722769-e2258980-d9aa-11ea-90b5-1807d3632d9a.png)
+![Screen Shot 2020-08-09 at 12 25 31 PM](https://user-images.githubusercontent.com/57844952/89739177-c1594480-da3b-11ea-9c3a-b37255463afa.png)
 
 
 ## Some (Maybe Useful) Notes
