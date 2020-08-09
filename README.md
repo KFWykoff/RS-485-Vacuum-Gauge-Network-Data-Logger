@@ -32,36 +32,22 @@ I used the latest stable branch of Python 3 for RPi at the time of assembling th
 
 Please refer to the simple diagram below for the wiring of the network. This is a typical RS-485 setup for half-duplex operation. I have omitted some equipment specific details, as they are not pertinent to understanding the overall layout. I have also omitted detailed schematics of the shield, the interplay between the shield and the RPi, etc., as these can be obtained from the manuals listed previously.
 
-![Screen Shot 2020-08-07 at 8 29 27 AM](https://user-images.githubusercontent.com/57844952/89673390-7dcbd280-d8a3-11ea-9c61-b5b3848d6335.png)
+![Screen Shot 2020-08-07 at 8 29 27 AM](https://user-images.githubusercontent.com/57844952/89673390-7dcbd280-d8a3-11ea-9c61-b5b3848d6335.png)  
 
 
 ## Some (Maybe Useful) Notes
 
-*  #### Quick Reference Sheet
-
-   To eliminate the need to continuously find the shield and gauge pinouts in their respective manuals while constructing the system, I hand drew a simple sheet      
-   for quick reference. Please see the document titled "Quick Pinout Reference." This includes the pinout for the RS-485 shield D-Sub interface and information 
-   on the screw interface (with the later being used in this project and the former there for anyone who may choose to use the D-Sub). It includes pinout 
-   information for both the 15-pin and 9-pin vacuum gauge D-Sub connectors (with the former being used in this case) and a simple diagram of a generic RS-485 
-   network wired for half-duplex operation.
-   
-*  #### Communication Pins
-
-   Because this configuration enables only half-duplex operation of the RS-485 system, data transmission and reciept must occur seperately (i.e. a command must be   
-   sent to the gauge with the shield in data transmission mode, then the shield must be switched to data receipt mode prior to reading the return data from a  
-   gauge). On the RPi, GPIO 14 connects to the 'Data In' (DI) pin on the MAX485 chip, GPIO 15 connects to the 'Recieve Out' (RO) pin, and GPIO 18 connects to the 
-   'Driver Enable' and 'Receiver Enable' (DE & RE) pins. The DE & RE pins are of opposite polarity (with DE active-high and RE active-low), thus they can be 
-   controlled soley by GPIO 18, pulling DE high when transmitting data and RE low when receiving data (with their respective counterpart maintaining opposite 
-   polarity).
-
-   ***NOTE:*** Some RPi models (including the model used) require you to enable the UART pins (GPIO 14 and 15) for such operation. This can be done by making changes to the RPi config file. Instructions detailing this process are easily found online, as are details as to which models require these changes.
-
-*  #### Communication Terminal Labeling
-
-   The communication terminals (listed as terminal '485-A' and '485-B' on the screw terminal interface of the shield used and as 'RS485 DATA B(+)' and 'RS485 DATA  
-   A(-)' in the manual for the gauges used) have oppositely labeled polarities [i.e. the shield has the configuration A(+), B(-)]. You will therefore need to make 
-   sure that the 'A' data pin of the gauges are in line with the 'B' screw terminal on the shield and vice versa.
-
+* #### Quick Reference Sheet
+  To eliminate the need to continuously find the shield and gauge pinouts in their respective manuals while constructing the system, I hand drew a simple sheet for quick reference. Please see the document titled "Quick Pinout Reference." This includes the pinout for the RS-485 shield D-Sub interface and information on the screw interface (with the later being used in this project and the former there for anyone who may choose to use the D-Sub for something similar). It includes pinout information for both the 15-pin and 9-pin vacuum gauge D-Sub connectors (where I have used the former in my network) and a simple diagram of a generic RS-485 network wired for half-duplex operation.
+  
+* #### Communication Pins
+  Because this configuration enables only half-duplex operation, data transmission and receipt  must occur separately (i.e. a command must be sent to the gauge with the shield in data transmission mode, then the shield must be switched to data receipt mode prior to reading the return data from a gauge). On the RPi, GPIO 14 connects to the "Data In" (DI) pin on the MAX485 chip, GPIO 15 connects to the "Receive Out" (RO) pin, and GPIO 18 connects to the "Driver Enable" and Receiever Enable" (DE and RE, respectively) pins. The DE and RE pins are of oppositve polarity (with DE active-high and RE active-low), thus they can be controlled soley by GPIO 18, pulling DE high when transmitting data and RE low when receiving data (with their respective counterpart achieving opposite polarity).
+  
+  ***NOTE:*** Some RPi models (including the model used) required you to enable the UART pins (GPIO 14 and 15) for such operation. This can be done by making changes to the RPi config file. Instructions detailing this process are easily found online, as are details as to which models require these changes.
+  
+* #### Communication Terminal Labels
+  The communication terminals (listed as terminal "485-A" and "485-B" on the screw terminal interface of the shield used and as "RS485 DATA B(+)" and "RS485 DATA A(-)" in the manual for the gauges used) have oppositely labeled polarities (i.e. the shield has polarities A(+), B(-)). Consequently, one needs to make sure that the "A" data pin of the vacuum gauges are in line with the "B" screw terminal on the shield and vice versa. 
+  
 *  #### Serial Communication Timing
 
    Because this configuration enables only half-duplex operation, as described previously, timing is an issue in ensuring that a full command is sent from the RPi 
